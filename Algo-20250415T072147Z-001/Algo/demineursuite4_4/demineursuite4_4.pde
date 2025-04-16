@@ -1,63 +1,60 @@
-int[]ti;
-int y = 0;
+int[]tabl;
+int x = 0;
 
 void setup() {
   initboard(10, 3);
-  isAMine(2);
-  //getMines(7);
+  isAMine(6);
+  getMines(7);
+  affichage ();
 }
 
-void initboard(int nbr_lignes, int nbrmines) {
+void initboard(int pos, int mine) {
 
-  ti = new int [nbr_lignes];
+  tabl = new int [pos];
 
-  while ( y<nbrmines) {
+  while ( x<mine) {
 
-    int pos_mine = int(random(nbr_lignes));
+    int pos_mine = int(random(pos));
 
-    if (ti[pos_mine]!=99) {
-      ti[pos_mine]=99;
-      y++;
+    if (tabl[pos_mine]!=99) {
+      tabl[pos_mine]=99;
+      x++;
     }
   }
-  println(ti);
+  println(tabl);
 }
 
 
 
-boolean isAMine ( int nbr_lignes ) {
-  int pos_mine = int(nbr_lignes);
-  if (ti[pos_mine]==99) {
+boolean isAMine ( int pos ) {
+  int pos_mine = int(pos);
+  if (tabl[pos_mine]==99) {
     println("Mine");
     return true;
   } else {
     println("Clear");
     return false;
-  }// Truove les mines
+  }
 }
 
+int getMines(int pos) {
+  boolean leftMine = (pos > 0 && tabl[pos-1] ==99);
+  boolean rightMine = (pos < tabl.length-1 && tabl[pos+1]==99);
+  if (leftMine && rightMine) {
+    return 2;
+  } else if (leftMine || rightMine) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
-
-//void getMines (int nbr_lignes) {
-//  boolean pos_mine = (int(nbr_lignes)!=-1 && int(nbr_lignes)!=10);
-//  //boolean minegauche = pos_mine > 0 &&
-//  //boolean minedroite = pos_mine = 
-
-//  if ( ti[pos_mine+1]==99 && ti[pos_mine-1]==99 ) {
-//    println("Il y a deux mines à proximité");
-    
-//  }
-//  if ( ti[pos_mine+1]==99||ti[pos_mine-1]!=99 ) {
-//    println("Il y a une mine à approximité");
-    
-//  } else {
-//    println("clear");
-    
-//  }
-//  //if ( ti[pos_mine+1]==99 || ti[pos_mine-1] == 99) {
-//  //  println("Il y a une mine à proximité");
-//  //  return true;
-//  //} else {
-//  //  println("position clear");
-//  //  return false;
-//}
+void affichage () {
+  for ( x=0; x<tabl.length; x++) {
+    if (tabl[x]==99) {
+      println("X");
+    } else {
+      println(getMines(x));
+    }
+  }
+}
